@@ -11,6 +11,7 @@ if [ -v WPA_COUNTRY ]; then
 fi
 
 if [ -v WPA_ESSID ] && [ -v WPA_PASSWORD ]; then
+# On chroot because we're using wpa_passphrase
 on_chroot <<EOF
 set -o pipefail
 wpa_passphrase "${WPA_ESSID}" "${WPA_PASSWORD}" | tee -a "/etc/wpa_supplicant/wpa_supplicant.conf"
@@ -20,6 +21,21 @@ cat >> "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf" << EOL
 
 network={
 	ssid="${WPA_ESSID}"
+	key_mgmt=NONE
+}
+EOL
+fi
+
+if [ -v WPA_ESSID2 ] && [ -v WPA_PASSWORD2 ]; then
+on_chroot <<EOF
+set -o pipefail
+wpa_passphrase "${WPA_ESSID2}" "${WPA_PASSWORD2}" | tee -a "/etc/wpa_supplicant/wpa_supplicant.conf"
+EOF
+elif [ -v WPA_ESSID2 ]; then
+cat >> "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf" << EOL
+
+network={
+	ssid="${WPA_ESSID2}"
 	key_mgmt=NONE
 }
 EOL

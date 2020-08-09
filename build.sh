@@ -170,6 +170,8 @@ export RELEASE=${RELEASE:-buster}
 export WPA_ESSID
 export WPA_PASSWORD
 export WPA_COUNTRY
+export WPA_ESSID2
+export WPA_PASSWORD2
 export ENABLE_SSH="${ENABLE_SSH:-0}"
 
 export LOCALE_DEFAULT="${LOCALE_DEFAULT:-en_GB.UTF-8}"
@@ -223,6 +225,11 @@ fi
 
 if [[ -n "${WPA_PASSWORD}" && ${#WPA_PASSWORD} -lt 8 || ${#WPA_PASSWORD} -gt 63  ]] ; then
 	echo "WPA_PASSWORD" must be between 8 and 63 characters
+	exit 1
+fi
+
+if [[ -n "${WPA_PASSWORD2}" && ${#WPA_PASSWORD2} -lt 8 || ${#WPA_PASSWORD2} -gt 63  ]] ; then
+	echo "WPA_PASSWORD2" must be between 8 and 63 characters
 	exit 1
 fi
 
